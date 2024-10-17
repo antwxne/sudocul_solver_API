@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.16)
-set(CMAKE_CXX_STANDARD 20)
+project(sudocul_solver_api)
+
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 include(FetchContent)
 Set(FETCHCONTENT_QUIET FALSE)
 FetchContent_Declare(express-cpp
@@ -20,8 +23,11 @@ FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download
 FetchContent_MakeAvailable(json)
 
 SET(BIN_NAME sudocul_solver_api)
-
-SET(SOURCES ./Sources/Main.cpp)
+include_directories(./Sources)
+SET(SOURCES ./Sources/Main.cpp
+./Sources/Solve.cpp
+./Sources/Tools/Exec.cpp
+)
 
 add_executable(${BIN_NAME} ${SOURCES})
 target_link_libraries(${BIN_NAME} PRIVATE express-cpp)

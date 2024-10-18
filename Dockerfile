@@ -1,12 +1,7 @@
-FROM gcc:latest AS builder
-WORKDIR /build
-RUN apt-get update && apt-get -y install cmake
+FROM python:3.12.7-slim 
 COPY . .
-RUN cmake -B build -DCMAKE_BUILD_TYPE=Debug
-RUN cmake --build build
-
-FROM gcc:latest
-WORKDIR /app
-RUN curl -fsSL https://get.docker.com | sh
-COPY --from=builder /build/build/sudocul_solver_api /app/sudocul_solver_api
-CMD ["./sudocul_solver_api"]
+RUN pip install -r requirements.txt
+EXPOSE 8000
+ENV PORT=8000
+RUN ./manage.py migrate --noinput
+CMD ./manage.py runserver 0.0.0.0:$PORT
